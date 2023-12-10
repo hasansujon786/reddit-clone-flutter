@@ -9,7 +9,7 @@ class SignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(18.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ElevatedButton.icon(
         icon: Image.asset(Constants.googleLogo, width: 35),
         onPressed: () {},

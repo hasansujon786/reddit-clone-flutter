@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "84919031227",
+    "project_id": "reddit-clone-7d1a1",
+    "storage_bucket": "reddit-clone-7d1a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84919031227:android:e244379be12e4e875f209e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_reddit_clone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt-MWUIaMxe5TlBBQnZcKx9uDlwlFiVjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

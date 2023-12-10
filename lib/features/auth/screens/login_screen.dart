@@ -29,14 +29,14 @@ class LoginScreen extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 30),
-          const Text('Dive into anything', style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 30),
+          const Text('Dive into anything', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Image.asset(Constants.loginEmote, height: 400),
           ),
-          const SizedBox(height: 30),
+          const Spacer(),
           const SignInButton(),
+          const SizedBox(height: 24),
         ],
       ),
     );
