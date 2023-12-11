@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_clone/features/auth/screens/login_screen.dart';
-import 'package:flutter_reddit_clone/theme/pallete.dart';
+
+import 'features/auth/screens/login_screen.dart';
+import 'theme/pallete.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

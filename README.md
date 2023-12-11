@@ -17,6 +17,7 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 https://youtu.be/B8Sx7wGiY-s?si=Gw9OhtU6MG9CiF2G
+https://github.com/RivaanRanawat/flutter-reddit-clone
 
 # Firebase
 - [Console](https://console.firebase.google.com/u/0/project/reddit-clone-7d1a1/overview)
