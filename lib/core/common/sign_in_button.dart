@@ -9,7 +9,7 @@ class SignInButton extends ConsumerWidget {
   const SignInButton({super.key});
 
   void onSignInWithGoogle(BuildContext context, WidgetRef ref) {
-    ref.read(authControllerProvider).signWithGoogle(context);
+    ref.read(authControllerProvider.notifier).signWithGoogle(context);
   }
 
   @override
