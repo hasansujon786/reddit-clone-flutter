@@ -10,11 +10,11 @@ import '../controller/auth_cotroller.dart';
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
-  static const routeName = '/login';
+  static const routeName = '/';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isAuthLoading = ref.watch(authControllerProvider);
-    final user = ref.watch(userProvider);
+    final user = ref.watch(signedInUserProvider);
 
     return Scaffold(
       appBar: AppBar(

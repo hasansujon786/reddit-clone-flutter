@@ -25,15 +25,17 @@ class AuthRepositoy {
     required FirebaseAuth firebaseAuth,
     required GoogleSignIn googleSignIn,
     required FirebaseFirestore firestore,
-  })  : _firebaseAuth = firebaseAuth,
+  })  : _auth = firebaseAuth,
         _googleSignIn = googleSignIn,
         _firestore = firestore;
 
-  final FirebaseAuth _firebaseAuth;
+  final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
   final FirebaseFirestore _firestore;
 
   CollectionReference get _usersCollection => _firestore.collection(FirebaseConstants.usersCollection);
+
+  Stream<User?> get authStateChanged => _auth.authStateChanges();
 
   FutureEither<UserModel> signWithGoogle() async {
     try {
@@ -44,7 +46,7 @@ class AuthRepositoy {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final userCredential = await _auth.signInWithCredential(credential);
 
       late UserModel foundUser;
       final isNewUser = userCredential.additionalUserInfo!.isNewUser;
@@ -60,7 +62,7 @@ class AuthRepositoy {
         );
         await _usersCollection.doc(foundUser.uid).set(foundUser.toJson());
       } else {
-        foundUser = await getUserDada(userCredential.user!.uid).first;
+        foundUser = await getUserData(userCredential.user!.uid).first;
       }
 
       return right(foundUser);
@@ -71,7 +73,7 @@ class AuthRepositoy {
     }
   }
 
-  Stream<UserModel> getUserDada(String uid) {
+  Stream<UserModel> getUserData(String uid) {
     return _usersCollection
         .doc(uid)
         .snapshots()

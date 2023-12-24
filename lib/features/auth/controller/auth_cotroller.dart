@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -8,15 +9,25 @@ import '../repository/auth_repositoy.dart';
 part 'auth_cotroller.g.dart';
 
 @riverpod
-class User extends _$User {
+class SignedInUser extends _$SignedInUser {
   @override
   UserModel? build() {
     return null;
   }
 
-  void setUser(UserModel newUser) {
-    state = newUser;
+  void update(UserModel? Function(UserModel?) cb) {
+    state = cb(state);
   }
+}
+
+@riverpod
+Stream<User?> authStateChanged(AuthStateChangedRef ref) {
+  return ref.watch(authRepositoyProvider.select((value) => value.authStateChanged));
+}
+
+@riverpod
+Stream<UserModel?> getUserData(GetUserDataRef ref, String uid) {
+  return ref.watch(authControllerProvider.notifier).getUserData(uid);
 }
 
 @riverpod
@@ -30,15 +41,18 @@ class AuthController extends _$AuthController {
 
   void signWithGoogle(BuildContext context) async {
     state = true;
-    print('------------ signWithGoogle -------------');
     final user = await _authRepositoy.signWithGoogle();
     state = false;
 
     user.fold(
       (l) => showSnackBar(context, l.message),
       (foundUser) {
-        ref.read(userProvider.notifier).setUser(foundUser);
+        ref.read(signedInUserProvider.notifier).update((state) => foundUser);
       },
     );
+  }
+
+  Stream<UserModel> getUserData(String uid) {
+    return _authRepositoy.getUserData(uid);
   }
 }
