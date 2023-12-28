@@ -17,7 +17,6 @@ class Pallete {
 
   // Themes
   static var darkModeAppTheme = ThemeData.dark().copyWith(
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
     scaffoldBackgroundColor: blackColor,
     cardColor: greyColor,
     appBarTheme: const AppBarTheme(

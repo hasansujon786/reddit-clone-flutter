@@ -6,7 +6,7 @@ part of 'auth_cotroller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authStateChangedHash() => r'1d2a11e039a0ec003bf2e61aa431c06e7db430b2';
+String _$authStateChangedHash() => r'bfcbd8ad8d877798a5d6a3ea0de5be61de94460c';
 
 /// See also [authStateChanged].
 @ProviderFor(authStateChanged)
@@ -21,7 +21,7 @@ final authStateChangedProvider = AutoDisposeStreamProvider<User?>.internal(
 );
 
 typedef AuthStateChangedRef = AutoDisposeStreamProviderRef<User?>;
-String _$getUserDataHash() => r'e55eef7850646457bdee8486918fac281071e3fa';
+String _$getUserDataHash() => r'355a44673c63c5637c3535e15f6d540cf4c6fa94';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -170,7 +170,7 @@ class _GetUserDataProviderElement
   String get uid => (origin as GetUserDataProvider).uid;
 }
 
-String _$signedInUserHash() => r'68bf460941e9f5aec34400340a94e2b1293a307c';
+String _$signedInUserHash() => r'0bfb25211e310cfdd4f7b19998e83182b5c0be81';
 
 /// See also [SignedInUser].
 @ProviderFor(SignedInUser)
@@ -185,7 +185,7 @@ final signedInUserProvider =
 );
 
 typedef _$SignedInUser = AutoDisposeNotifier<UserModel?>;
-String _$authControllerHash() => r'6020ee510cc99148e062d2de9f8999fa3770b7ea';
+String _$authControllerHash() => r'5e85a8f27c24be9afa6ec0004ed7b85b5c24c64b';
 
 /// See also [AuthController].
 @ProviderFor(AuthController)
