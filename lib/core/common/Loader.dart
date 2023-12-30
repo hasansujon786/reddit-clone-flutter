@@ -10,3 +10,5 @@ class Loader extends StatelessWidget {
     );
   }
 }
+
+Widget rpLodingView() => const Loader();

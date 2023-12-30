@@ -40,13 +40,23 @@ class CommunityController extends _$CommunityController {
     });
   }
 
-  Stream<List<Community>> getUserCommunityies() {
+  Stream<List<Community>> getUserCommunities() {
     final uid = ref.read(signedInUserProvider)?.uid ?? '';
-    return _communityRepository.getUserCommunityies(uid);
+    return _communityRepository.getUserCommunities(uid);
+  }
+
+  // TODO: Learn how to handle error in stream
+  Stream<Community> getCommunityByName(String name) {
+    return _communityRepository.getCommunityByName(name);
   }
 }
 
 @Riverpod(keepAlive: true)
 Stream<List<Community>> userCommunities(UserCommunitiesRef ref) {
-  return ref.read(communityControllerProvider.notifier).getUserCommunityies();
+  return ref.read(communityControllerProvider.notifier).getUserCommunities();
+}
+
+@Riverpod(keepAlive: true)
+Stream<Community> getCommunityByName(GetCommunityByNameRef ref, String communityName) {
+  return ref.read(communityControllerProvider.notifier).getCommunityByName(communityName);
 }

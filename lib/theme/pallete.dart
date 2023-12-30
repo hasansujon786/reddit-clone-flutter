@@ -29,6 +29,12 @@ class Pallete {
       backgroundColor: drawerColor,
     ),
     primaryColor: redColor,
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: MaterialStatePropertyAll(blueColor),
+        side: const MaterialStatePropertyAll(BorderSide(color: Colors.blue)),
+      ),
+    ),
     // backgroundColor: drawerColor, // will be used as alternative background color
   );
 

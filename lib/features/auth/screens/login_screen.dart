@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/common/Loader.dart';
+import '../../../core/common/loader.dart';
 import '../../../core/common/sign_in_button.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/models/user_model.dart';

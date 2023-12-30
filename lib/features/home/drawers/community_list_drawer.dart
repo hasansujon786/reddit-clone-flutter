@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 
-import '../../../core/common/Loader.dart';
+import '../../../core/common/loader.dart';
 import '../../../core/common/error_text.dart';
 import '../../community/controller/community_controller.dart';
 import '../../community/screens/create_community_screens.dart';
 
 class CommunityListDrawer extends ConsumerWidget {
   const CommunityListDrawer({super.key});
+
+  void navigateToCommunity(BuildContext context, String name) {
+    Routemaster.of(context).push('r/$name');
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,8 +23,7 @@ class CommunityListDrawer extends ConsumerWidget {
             ListTile(
               title: const Text('Create a community'),
               leading: const Icon(Icons.add),
-              onTap: () => Routemaster.of(context)
-                  .push(CreateCommunityScreens.routeName),
+              onTap: () => Routemaster.of(context).push(CreateCommunityScreens.routeName),
             ),
             ref.watch(userCommunitiesProvider).when(
                 data: (communities) {
@@ -30,6 +33,7 @@ class CommunityListDrawer extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         final comm = communities[index];
                         return ListTile(
+                          onTap: () => navigateToCommunity(context, comm.name),
                           leading: CircleAvatar(
                             backgroundImage: NetworkImage(comm.avater),
                           ),

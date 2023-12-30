@@ -39,14 +39,18 @@ class CommunityRepository {
     }
   }
 
-  Stream<List<Community>> getUserCommunityies(String uid) {
+  Stream<List<Community>> getUserCommunities(String uid) {
     return _communityCollection.where('members', arrayContains: uid).snapshots().map((event) {
       List<Community> foundCommunities = [];
       for (var doc in event.docs) {
-        foundCommunities.add(Community.fromJson(doc.data() as Map<String, dynamic>));
+        foundCommunities.add(Community.fromJson(doc.data() as JsonMap));
       }
 
       return foundCommunities;
     });
+  }
+
+  Stream<Community> getCommunityByName(String name) {
+    return _communityCollection.doc(name).snapshots().map((event) => Community.fromJson(event.data() as JsonMap));
   }
 }

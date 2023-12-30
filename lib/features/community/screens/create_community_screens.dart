@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/common/Loader.dart';
+import '../../../core/common/loader.dart';
 import '../controller/community_controller.dart';
 
 class CreateCommunityScreens extends ConsumerStatefulWidget {

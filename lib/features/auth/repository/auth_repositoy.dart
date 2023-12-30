@@ -74,9 +74,6 @@ class AuthRepositoy {
   }
 
   Stream<UserModel> getUserData(String uid) {
-    return _usersCollection
-        .doc(uid)
-        .snapshots()
-        .map((event) => UserModel.fromJson(event.data() as Map<String, Object?>));
+    return _usersCollection.doc(uid).snapshots().map((event) => UserModel.fromJson(event.data() as JsonMap));
   }
 }
