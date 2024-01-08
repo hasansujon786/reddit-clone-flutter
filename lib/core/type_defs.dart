@@ -3,5 +3,5 @@ import 'package:fpdart/fpdart.dart';
 import 'failure.dart';
 
 typedef FutureEither<T> = Future<Either<Failure, T>>;
-typedef FutureVoid = FutureEither<void>;
+typedef FutureEitherVoid = FutureEither<void>;
 typedef JsonMap = Map<String, dynamic>;

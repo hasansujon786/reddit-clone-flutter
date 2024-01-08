@@ -24,7 +24,7 @@ class CommunityRepository {
 
   CollectionReference get _communityCollection => _firestore.collection(FirebaseConstants.communitiesCollection);
 
-  FutureVoid createCommunity(Community community) async {
+  FutureEitherVoid createCommunity(Community community) async {
     try {
       final communityDoc = await _communityCollection.doc(community.name).get();
       if (communityDoc.exists) {
@@ -52,5 +52,15 @@ class CommunityRepository {
 
   Stream<Community> getCommunityByName(String name) {
     return _communityCollection.doc(name).snapshots().map((event) => Community.fromJson(event.data() as JsonMap));
+  }
+
+  FutureEitherVoid editCommunity(Community community) async {
+    try {
+      return right(_communityCollection.doc(community.name).update(community.toJson()));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
   }
 }

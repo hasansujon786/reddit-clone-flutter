@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:routemaster/routemaster.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/models/community.dart';
+import '../../../core/providers/storage_repository_provider.dart';
 import '../../../core/utils.dart';
 import '../../auth/controller/auth_cotroller.dart';
 import '../repository/community_repository.dart';
@@ -13,6 +16,7 @@ part 'community_controller.g.dart';
 @riverpod
 class CommunityController extends _$CommunityController {
   late final _communityRepository = ref.read(communityRepositoryProvider);
+  late final _storageRepository = ref.read(storageRepositoryProvider);
 
   @override
   bool build() {
@@ -48,6 +52,43 @@ class CommunityController extends _$CommunityController {
   // TODO: Learn how to handle error in stream
   Stream<Community> getCommunityByName(String name) {
     return _communityRepository.getCommunityByName(name);
+  }
+
+  Future<void> editCommunity({
+    required BuildContext context,
+    required Community community,
+    required File? avaterFile,
+    required File? bannerFile,
+  }) async {
+    state = true;
+    if (avaterFile != null) {
+      final res = await _storageRepository.storeFile(
+        id: community.name,
+        file: avaterFile,
+        path: 'communities/avater',
+      );
+      res.fold((l) => showSnackBar(context, l.message), (r) {
+        community = community.copyWith(avater: r);
+      });
+    }
+
+    if (bannerFile != null) {
+      final res = await _storageRepository.storeFile(
+        id: community.name,
+        file: bannerFile,
+        path: 'communities/banner',
+      );
+      res.fold((l) => showSnackBar(context, l.message), (r) {
+        community = community.copyWith(banner: r);
+      });
+    }
+
+    final res = await _communityRepository.editCommunity(community);
+
+    state = false;
+    res.fold((l) => showSnackBar(context, l.message), (r) {
+      Routemaster.of(context).pop();
+    });
   }
 }
 

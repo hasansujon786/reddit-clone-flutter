@@ -19,7 +19,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   UserModel? userModel;
 
   void getData(WidgetRef ref, User userData) async {
-    userModel = await ref.watch(authControllerProvider.notifier).getUserData(userData.uid).first;
+    userModel = await ref.read(authControllerProvider.notifier).getUserData(userData.uid).first;
     ref.read(signedInUserProvider.notifier).update((state) => userModel);
     setState(() {});
   }
@@ -36,9 +36,10 @@ class _MyAppState extends ConsumerState<MyApp> {
         return ref.watch(authStateChangedProvider).when(
               data: (userData) {
                 if (userData != null) {
-                  getData(ref, userData);
                   if (userModel != null) {
                     return authUserRoutes;
+                  } else {
+                    getData(ref, userData);
                   }
                 }
                 return guestUserRoutes;
