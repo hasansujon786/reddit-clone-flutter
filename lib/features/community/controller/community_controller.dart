@@ -90,6 +90,10 @@ class CommunityController extends _$CommunityController {
       Routemaster.of(context).pop();
     });
   }
+
+  Stream<List<Community>> searchCommunity(String query) {
+    return _communityRepository.searchCommunity(query);
+  }
 }
 
 @Riverpod(keepAlive: true)
@@ -100,4 +104,9 @@ Stream<List<Community>> userCommunities(UserCommunitiesRef ref) {
 @Riverpod(keepAlive: true)
 Stream<Community> getCommunityByName(GetCommunityByNameRef ref, String communityName) {
   return ref.read(communityControllerProvider.notifier).getCommunityByName(communityName);
+}
+
+@riverpod
+Stream<List<Community>> searchCommunity(SearchCommunityRef ref, String query) {
+  return ref.watch(communityControllerProvider.notifier).searchCommunity(query);
 }

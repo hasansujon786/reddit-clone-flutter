@@ -173,8 +173,138 @@ class _GetCommunityByNameProviderElement
       (origin as GetCommunityByNameProvider).communityName;
 }
 
+String _$searchCommunityHash() => r'f4bed72f05af82f19836c457d203f7780410f1c2';
+
+/// See also [searchCommunity].
+@ProviderFor(searchCommunity)
+const searchCommunityProvider = SearchCommunityFamily();
+
+/// See also [searchCommunity].
+class SearchCommunityFamily extends Family<AsyncValue<List<Community>>> {
+  /// See also [searchCommunity].
+  const SearchCommunityFamily();
+
+  /// See also [searchCommunity].
+  SearchCommunityProvider call(
+    String query,
+  ) {
+    return SearchCommunityProvider(
+      query,
+    );
+  }
+
+  @override
+  SearchCommunityProvider getProviderOverride(
+    covariant SearchCommunityProvider provider,
+  ) {
+    return call(
+      provider.query,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'searchCommunityProvider';
+}
+
+/// See also [searchCommunity].
+class SearchCommunityProvider
+    extends AutoDisposeStreamProvider<List<Community>> {
+  /// See also [searchCommunity].
+  SearchCommunityProvider(
+    String query,
+  ) : this._internal(
+          (ref) => searchCommunity(
+            ref as SearchCommunityRef,
+            query,
+          ),
+          from: searchCommunityProvider,
+          name: r'searchCommunityProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$searchCommunityHash,
+          dependencies: SearchCommunityFamily._dependencies,
+          allTransitiveDependencies:
+              SearchCommunityFamily._allTransitiveDependencies,
+          query: query,
+        );
+
+  SearchCommunityProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.query,
+  }) : super.internal();
+
+  final String query;
+
+  @override
+  Override overrideWith(
+    Stream<List<Community>> Function(SearchCommunityRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SearchCommunityProvider._internal(
+        (ref) => create(ref as SearchCommunityRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        query: query,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<List<Community>> createElement() {
+    return _SearchCommunityProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SearchCommunityProvider && other.query == query;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, query.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin SearchCommunityRef on AutoDisposeStreamProviderRef<List<Community>> {
+  /// The parameter `query` of this provider.
+  String get query;
+}
+
+class _SearchCommunityProviderElement
+    extends AutoDisposeStreamProviderElement<List<Community>>
+    with SearchCommunityRef {
+  _SearchCommunityProviderElement(super.provider);
+
+  @override
+  String get query => (origin as SearchCommunityProvider).query;
+}
+
 String _$communityControllerHash() =>
-    r'e0e142ff51641c035964465ce16f2245129b73de';
+    r'c80646c9fcc73755841427c7ab6f908f186fc3e3';
 
 /// See also [CommunityController].
 @ProviderFor(CommunityController)
