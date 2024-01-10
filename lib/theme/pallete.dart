@@ -12,11 +12,11 @@ class Pallete {
   static const greyColor = Color.fromRGBO(26, 39, 45, 1); // secondary color
   static const drawerColor = Color.fromRGBO(18, 18, 18, 1);
   static const whiteColor = Colors.white;
-  static var redColor = Colors.red.shade500;
-  static var blueColor = Colors.blue.shade300;
+  static final redColor = Colors.red.shade500;
+  static final blueColor = Colors.blue.shade300;
 
   // Themes
-  static var darkModeAppTheme = ThemeData.dark().copyWith(
+  static final darkModeAppTheme = ThemeData.dark().copyWith(
     scaffoldBackgroundColor: blackColor,
     cardColor: greyColor,
     appBarTheme: const AppBarTheme(
@@ -38,7 +38,7 @@ class Pallete {
     // backgroundColor: drawerColor, // will be used as alternative background color
   );
 
-  static var lightModeAppTheme = ThemeData.light().copyWith(
+  static final lightModeAppTheme = ThemeData.light().copyWith(
     scaffoldBackgroundColor: whiteColor,
     cardColor: greyColor,
     appBarTheme: const AppBarTheme(

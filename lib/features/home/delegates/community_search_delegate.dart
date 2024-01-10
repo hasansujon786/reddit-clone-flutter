@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
 import '../../community/controller/community_controller.dart';
 
 class CommunitySearchDelegate extends SearchDelegate {
-
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -29,6 +29,10 @@ class CommunitySearchDelegate extends SearchDelegate {
     return const SizedBox();
   }
 
+  void navigateToCommunity(BuildContext context, String name) {
+    Routemaster.of(context).push('r/$name');
+  }
+
   @override
   Widget buildSuggestions(BuildContext context) {
     return Consumer(
@@ -44,7 +48,7 @@ class CommunitySearchDelegate extends SearchDelegate {
                         backgroundImage: NetworkImage(community.avater),
                       ),
                       title: Text('r/${community.name}'),
-                      // onTap: () => navigateToCommunity(context, community.name),
+                      onTap: () => navigateToCommunity(context, community.name),
                     );
                   },
                 );
@@ -56,4 +60,3 @@ class CommunitySearchDelegate extends SearchDelegate {
     );
   }
 }
-

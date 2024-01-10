@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:routemaster/routemaster.dart';
 
 import '../../../core/constants/constants.dart';
+import '../../../core/failure.dart';
 import '../../../core/models/community.dart';
 import '../../../core/providers/storage_repository_provider.dart';
 import '../../../core/utils.dart';
@@ -89,6 +91,22 @@ class CommunityController extends _$CommunityController {
     res.fold((l) => showSnackBar(context, l.message), (r) {
       Routemaster.of(context).pop();
     });
+  }
+
+  void joinOrLeaveCommunity(Community community, BuildContext context) async {
+    final uid = ref.read(signedInUserProvider)?.uid ?? '';
+
+    String msg;
+    Either<Failure, void> res;
+    if (community.members.contains(uid)) {
+      msg = 'Community left successfully.';
+      res = await _communityRepository.leaveCommunity(community.name, uid);
+    } else {
+      msg = 'Community joined successfully.';
+      res = await _communityRepository.joinCommunity(community.name, uid);
+    }
+
+    res.fold((l) => showSnackBar(context, l.message), (r) => showSnackBar(context, msg));
   }
 
   Stream<List<Community>> searchCommunity(String query) {

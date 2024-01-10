@@ -13,10 +13,13 @@ class CommunityScreen extends ConsumerWidget {
   final String name;
   const CommunityScreen({super.key, required this.name});
 
+  void joinOrLeaveCommunity(BuildContext context, WidgetRef ref, Community community) {
+    ref.read(communityControllerProvider.notifier).joinOrLeaveCommunity(community, context);
+  }
+
   static const routeName = '/r/:name';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('community_screen');
     final user = ref.watch(signedInUserProvider)!;
     return ref.watch(getCommunityByNameProvider(name)).when(
           data: (commnity) {
@@ -78,15 +81,17 @@ class CommunityScreen extends ConsumerWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                         )
-                      : OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-                            minimumSize: const Size(40, 30),
-                          ),
-                          child: Text(
-                            commnity.members.contains(user.uid) ? 'Joined' : 'Join',
-                            style: const TextStyle(fontSize: 12),
+                      : Consumer(
+                          builder: (context, ref, child) => OutlinedButton(
+                            onPressed: () => joinOrLeaveCommunity(context, ref, commnity),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                              minimumSize: const Size(40, 30),
+                            ),
+                            child: Text(
+                              commnity.members.contains(user.uid) ? 'Joined' : '  Join  ',
+                              style: const TextStyle(fontSize: 12),
+                            ),
                           ),
                         ),
                 ],

@@ -73,6 +73,11 @@ class AuthRepositoy {
     }
   }
 
+  Future<void> signOut() async {
+    await _googleSignIn.signOut();
+    await _auth.signOut();
+  }
+
   Stream<UserModel> getUserData(String uid) {
     return _usersCollection.doc(uid).snapshots().map((event) => UserModel.fromJson(event.data() as JsonMap));
   }

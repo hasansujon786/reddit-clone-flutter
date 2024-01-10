@@ -64,8 +64,32 @@ class CommunityRepository {
     }
   }
 
+  FutureEitherVoid joinCommunity(String communityName, String uid) async {
+    try {
+      return right(_communityCollection.doc(communityName).update({
+        'members': FieldValue.arrayUnion([uid])
+      }));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  FutureEitherVoid leaveCommunity(String communityName, String uid) async {
+    try {
+      return right(_communityCollection.doc(communityName).update({
+        'members': FieldValue.arrayRemove([uid])
+      }));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
   Stream<List<Community>> searchCommunity(String query) {
-   return _communityCollection
+    return _communityCollection
         .where(
           'name',
           isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,

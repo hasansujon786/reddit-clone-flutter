@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../auth/controller/auth_cotroller.dart';
 import '../delegates/community_search_delegate.dart';
 import '../drawers/community_list_drawer.dart';
+import '../drawers/profile_drawer.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -24,9 +25,15 @@ class HomeScreen extends ConsumerWidget {
             },
             icon: const Icon(Icons.search),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: CircleAvatar(backgroundImage: NetworkImage(user.displayImage)),
+          Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+                icon: CircleAvatar(backgroundImage: NetworkImage(user.displayImage)),
+              );
+            }
           )
         ],
       ),
@@ -34,6 +41,7 @@ class HomeScreen extends ConsumerWidget {
         child: Text(user.name),
       ),
       drawer: const CommunityListDrawer(),
+      endDrawer: const ProfileDrawer(),
     );
   }
 }
