@@ -54,9 +54,10 @@ class AuthController extends _$AuthController {
 
   Future<void> signOut() async {
     await _authRepositoy.signOut();
+    ref.read(signedInUserProvider.notifier).update((state) => null);
   }
 
-  Stream<UserModel> getUserData(String uid) {
+  Stream<UserModel?> getUserData(String uid) {
     return _authRepositoy.getUserData(uid);
   }
 }

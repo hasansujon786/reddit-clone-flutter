@@ -25,16 +25,14 @@ class HomeScreen extends ConsumerWidget {
             },
             icon: const Icon(Icons.search),
           ),
-          Builder(
-            builder: (context) {
-              return IconButton(
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-                icon: CircleAvatar(backgroundImage: NetworkImage(user.displayImage)),
-              );
-            }
-          )
+          Builder(builder: (context) {
+            return IconButton(
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              icon: CircleAvatar(backgroundImage: NetworkImage(user.displayImage)),
+            );
+          })
         ],
       ),
       body: Center(
