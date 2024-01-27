@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 
 import 'features/auth/screens/login_screen.dart';
+import 'features/community/screens/add_mods_screen.dart';
 import 'features/community/screens/community_screen.dart';
 import 'features/community/screens/create_community_screens.dart';
 import 'features/community/screens/edit_commnity_screen.dart';
@@ -21,5 +22,6 @@ final authUserRoutes = RouteMap(
     CommunityScreen.routeName: (info) => MaterialPage(child: CommunityScreen(name: info.pathParameters['name']!)),
     ModsToolsScreen.routeName: (info) => MaterialPage(child: ModsToolsScreen(name: info.pathParameters['name']!)),
     EditCommnityScreen.routeName: (info) => MaterialPage(child: EditCommnityScreen(name: info.pathParameters['name']!)),
+    AddModsScreen.routeName: (info) => MaterialPage(child: AddModsScreen(name: info.pathParameters['name']!)),
   },
 );

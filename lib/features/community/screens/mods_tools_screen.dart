@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 
+import 'add_mods_screen.dart';
+
 class ModsToolsScreen extends StatelessWidget {
   final String name;
   const ModsToolsScreen({super.key, required this.name});
@@ -17,7 +19,7 @@ class ModsToolsScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.add_moderator),
             title: const Text('Add Moderators'),
-            onTap: () {},
+            onTap: () => AddModsScreen.navigate(context, name),
           ),
           ListTile(
             leading: const Icon(Icons.edit),

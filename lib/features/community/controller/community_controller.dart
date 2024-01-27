@@ -112,6 +112,12 @@ class CommunityController extends _$CommunityController {
   Stream<List<Community>> searchCommunity(String query) {
     return _communityRepository.searchCommunity(query);
   }
+
+  void addMods(BuildContext context, String communityName, List<String> uids) async {
+    final res = await _communityRepository.addMods(communityName, uids);
+
+    res.fold((l) => showSnackBar(context, l.message), (r) => Routemaster.of(context).pop());
+  }
 }
 
 @Riverpod(keepAlive: true)

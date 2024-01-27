@@ -89,6 +89,7 @@ class CommunityRepository {
   }
 
   Stream<List<Community>> searchCommunity(String query) {
+    // INFO: Learn how to search in firebase
     return _communityCollection
         .where(
           'name',
@@ -108,5 +109,17 @@ class CommunityRepository {
       }
       return communities;
     });
+  }
+
+  FutureEitherVoid addMods(String communityName, List<String> uids) async {
+    try {
+      return right(_communityCollection.doc(communityName).update({
+        'mods': uids,
+      }));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
   }
 }
