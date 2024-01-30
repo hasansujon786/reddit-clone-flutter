@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/common/avater_and_banner_img_picker.dart';
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
 import '../../../core/constants/constants.dart';
@@ -74,49 +74,13 @@ class _EditCommnityScreenState extends ConsumerState<EditCommnityScreen> {
                 ? const Loader()
                 : Column(
                     children: [
-                      Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: GestureDetector(
-                              onTap: selectBannerImage,
-                              child: DottedBorder(
-                                color: Colors.white,
-                                borderType: BorderType.RRect,
-                                radius: const Radius.circular(8),
-                                strokeCap: StrokeCap.round,
-                                dashPattern: const [10, 4],
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 150,
-                                  decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                                  ),
-                                  child: buildBannerImage(community, newBannerFile),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: -20,
-                            left: 24,
-                            child: GestureDetector(
-                              onTap: selectProfileImage,
-                              child: newProfileFile != null
-                                  ? CircleAvatar(
-                                      backgroundImage: FileImage(newProfileFile!),
-                                      backgroundColor: Colors.grey.shade400,
-                                      radius: 35,
-                                    )
-                                  : CircleAvatar(
-                                      backgroundImage: NetworkImage(community.avater),
-                                      backgroundColor: Colors.grey.shade400,
-                                      radius: 35,
-                                    ),
-                            ),
-                          )
-                        ],
+                      AvaterAndBannerImgPicker(
+                        profileFile: newProfileFile,
+                        bannerFile: newBannerFile,
+                        bannerImage: community.banner,
+                        profileImage: community.banner,
+                        onTapProfle: selectProfileImage,
+                        onTapBanner: selectBannerImage,
                       ),
                       Text(community.name),
                     ],
