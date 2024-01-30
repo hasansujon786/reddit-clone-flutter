@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 
 import '../../../theme/pallete.dart';
+import '../../../theme/theme_controller.dart';
 import '../../auth/controller/auth_cotroller.dart';
 
 class ProfileDrawer extends ConsumerWidget {
@@ -19,6 +20,7 @@ class ProfileDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(signedInUserProvider)!;
+    final themeMode = ref.watch(themeControllerProvider).value;
 
     return SafeArea(
       child: Drawer(
@@ -53,8 +55,10 @@ class ProfileDrawer extends ConsumerWidget {
                   right: 8,
                   top: 6,
                   child: Switch.adaptive(
-                    value: false,
-                    onChanged: (val) {},
+                    value: themeMode == ThemeMode.dark,
+                    onChanged: (val) {
+                      ref.read(themeControllerProvider.notifier).toggleTheme();
+                    },
                   ),
                 )
               ],

@@ -8,6 +8,7 @@ import 'core/common/loader.dart';
 import 'features/auth/controller/auth_cotroller.dart';
 import 'routes.dart';
 import 'theme/pallete.dart';
+import 'theme/theme_controller.dart';
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
@@ -27,13 +28,15 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final signInUser = ref.watch(signedInUserProvider);
+    final themeMode = ref.watch(themeControllerProvider).value;
 
     return ref.watch(authStateChangedProvider).when(
           data: (authChangedData) => MaterialApp.router(
             debugShowCheckedModeBanner: false,
             title: 'Reddit Tutorial',
-            // theme: ref.watch(themeNotifierProvider),
-            theme: Pallete.darkModeAppTheme,
+            themeMode: themeMode,
+            theme: Pallete.lightModeAppTheme,
+            darkTheme: Pallete.darkModeAppTheme,
             routeInformationParser: const RoutemasterParser(),
             routerDelegate: RoutemasterDelegate(
               routesBuilder: (context) {
