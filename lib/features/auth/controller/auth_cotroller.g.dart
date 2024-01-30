@@ -185,7 +185,7 @@ final signedInUserProvider =
 );
 
 typedef _$SignedInUser = AutoDisposeNotifier<UserModel?>;
-String _$authControllerHash() => r'5e85a8f27c24be9afa6ec0004ed7b85b5c24c64b';
+String _$authControllerHash() => r'f7f95b79e8ee47cb4becbe4cd4078cf1209c6179';
 
 /// See also [AuthController].
 @ProviderFor(AuthController)

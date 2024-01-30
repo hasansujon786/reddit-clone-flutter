@@ -8,6 +8,8 @@ import 'features/community/screens/create_community_screens.dart';
 import 'features/community/screens/edit_commnity_screen.dart';
 import 'features/community/screens/mods_tools_screen.dart';
 import 'features/home/screens/home_screen.dart';
+import 'features/user_profile/screens/edit_profile_screen.dart';
+import 'features/user_profile/screens/user_profile_screen.dart';
 
 final guestUserRoutes = RouteMap(
   routes: {
@@ -23,5 +25,7 @@ final authUserRoutes = RouteMap(
     ModsToolsScreen.routeName: (info) => MaterialPage(child: ModsToolsScreen(name: info.pathParameters['name']!)),
     EditCommnityScreen.routeName: (info) => MaterialPage(child: EditCommnityScreen(name: info.pathParameters['name']!)),
     AddModsScreen.routeName: (info) => MaterialPage(child: AddModsScreen(name: info.pathParameters['name']!)),
+    UserProfileScreen.routeName: (info) => MaterialPage(child: UserProfileScreen(uid: info.pathParameters['uid']!)),
+    EditProfileScreen.routeName: (info) => MaterialPage(child: EditProfileScreen(uid: info.pathParameters['uid']!)),
   },
 );

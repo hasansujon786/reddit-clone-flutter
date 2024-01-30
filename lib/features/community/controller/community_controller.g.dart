@@ -173,7 +173,7 @@ class _GetCommunityByNameProviderElement
       (origin as GetCommunityByNameProvider).communityName;
 }
 
-String _$searchCommunityHash() => r'f4bed72f05af82f19836c457d203f7780410f1c2';
+String _$searchCommunityHash() => r'e2f346818397d0080bcb9af2f2cb4b2f193d3b29';
 
 /// See also [searchCommunity].
 @ProviderFor(searchCommunity)
@@ -304,7 +304,7 @@ class _SearchCommunityProviderElement
 }
 
 String _$communityControllerHash() =>
-    r'c80646c9fcc73755841427c7ab6f908f186fc3e3';
+    r'2e67e746862264e5104510883157c920226e3df1';
 
 /// See also [CommunityController].
 @ProviderFor(CommunityController)

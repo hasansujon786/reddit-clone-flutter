@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
 import '../../../theme/pallete.dart';
 import '../../auth/controller/auth_cotroller.dart';
@@ -11,6 +12,10 @@ class ProfileDrawer extends ConsumerWidget {
     ref.read(authControllerProvider.notifier).signOut();
   }
 
+  void navToUserProfile(BuildContext context, String uid) {
+    Routemaster.of(context).push('/u/$uid');
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(signedInUserProvider)!;
@@ -20,10 +25,7 @@ class ProfileDrawer extends ConsumerWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            CircleAvatar(
-              radius: 70,
-              backgroundImage: NetworkImage(user.displayImage),
-            ),
+            CircleAvatar(radius: 70, backgroundImage: NetworkImage(user.displayImage)),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12),
               child: Text('u/${user.name}', style: const TextStyle(fontSize: 18)),
@@ -32,7 +34,7 @@ class ProfileDrawer extends ConsumerWidget {
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('My Profile'),
-              onTap: () {},
+              onTap: () => navToUserProfile(context, user.uid),
             ),
             ListTile(
               leading: Icon(Icons.logout, color: Pallete.redColor),

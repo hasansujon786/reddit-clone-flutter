@@ -35,6 +35,16 @@ class Pallete {
         side: const MaterialStatePropertyAll(BorderSide(color: Colors.blue)),
       ),
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      contentPadding: const EdgeInsets.all(16),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade600)),
+      // labelStyle: const TextStyle(
+      //   // color: kYellow,
+      //   fontSize: 24.0,
+      // ),
+    ),
     // backgroundColor: drawerColor, // will be used as alternative background color
   );
 
