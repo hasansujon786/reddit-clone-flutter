@@ -28,7 +28,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final signInUser = ref.watch(signedInUserProvider);
-    final themeMode = ref.watch(themeControllerProvider).value;
+    final themeMode = ref.watch(themeModeProvider);
 
     return ref.watch(authStateChangedProvider).when(
           data: (authChangedData) => MaterialApp.router(

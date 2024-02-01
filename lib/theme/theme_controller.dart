@@ -1,13 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'theme_controller.g.dart';
+final themeServiceProvider = Provider<ThemeStorageService>((ref) => ThemeStorageServiceImpl());
+final themeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(ThemeModeNotifier.new);
 
-@riverpod
-class ThemeController extends _$ThemeController {
+Future<void> initThemeController(ProviderContainer container) async {
+  final storageService = container.read(themeServiceProvider);
+  final mode = await storageService.loadThemeMode();
+  container.read(themeModeProvider.notifier).update(mode);
+}
+
+class ThemeModeNotifier extends Notifier<ThemeMode> {
+  late ThemeStorageService _storageService;
+
   @override
-  Future<ThemeMode> build() async {
+  ThemeMode build() {
+    _storageService = ref.read(themeServiceProvider);
+    return ThemeMode.light;
+  }
+
+  Future<void> update(ThemeMode nextMode) async {
+    state = nextMode;
+    await _storageService.saveThemeMode(nextMode);
+  }
+
+  void toggleTheme() async {
+    state = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    await _storageService.saveThemeMode(state);
+  }
+}
+
+abstract class ThemeStorageService {
+  Future<ThemeMode> loadThemeMode();
+  Future<void> saveThemeMode(ThemeMode mode);
+}
+
+class ThemeStorageServiceImpl extends ThemeStorageService {
+  @override
+  Future<ThemeMode> loadThemeMode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final theme = prefs.getString('theme');
 
@@ -18,15 +49,9 @@ class ThemeController extends _$ThemeController {
     }
   }
 
-  void toggleTheme() async {
+  @override
+  Future<void> saveThemeMode(ThemeMode mode) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (state.value == ThemeMode.dark) {
-      state = const AsyncValue.data(ThemeMode.light);
-      prefs.setString('theme', 'light');
-    } else {
-      state = const AsyncValue.data(ThemeMode.dark);
-      prefs.setString('theme', 'dark');
-    }
+    prefs.setString('theme', mode.name);
   }
 }
