@@ -21,10 +21,3 @@ https://github.com/RivaanRanawat/flutter-reddit-clone
 
 # Firebase
 - [Console](https://console.firebase.google.com/u/0/project/reddit-clone-7d1a1/overview)
-
-## Platform  Firebase App Id
-web       1:84919031227:web:c16de3e4691249325f209e
-android   1:84919031227:android:e244379be12e4e875f209e
-ios       1:84919031227:ios:96b8031b614f38345f209e
-macos     1:84919031227:ios:8fd8f3a425c561e45f209e
-
