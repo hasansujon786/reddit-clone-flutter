@@ -23,9 +23,9 @@ class StorageRepository {
   }) : _firebaseStorage = firebaseStorage;
 
   FutureEither<String> storeFile({
+    required String path,
     required String id,
     required File? file,
-    required String path,
   }) async {
     try {
       final ref = _firebaseStorage.ref().child(path).child(id);

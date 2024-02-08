@@ -2,16 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../auth/controller/auth_cotroller.dart';
+import '../../feed/screens/feed_screen.dart';
+import '../../post/screens/add_post_screen.dart';
 import '../delegates/community_search_delegate.dart';
 import '../drawers/community_list_drawer.dart';
 import '../drawers/profile_drawer.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   static const routeName = '/';
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  int _page = 0;
+
+  @override
+  Widget build(BuildContext context) {
     final user = ref.watch(signedInUserProvider)!;
 
     return Scaffold(
@@ -35,11 +44,26 @@ class HomeScreen extends ConsumerWidget {
           })
         ],
       ),
-      body: Center(
-        child: Text(user.name),
-      ),
+      body: const [
+        FeedScreen(),
+        AddPostScreen(),
+      ][_page],
       drawer: const CommunityListDrawer(),
       endDrawer: const ProfileDrawer(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _page,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        onTap: (page) {
+          setState(() {
+            _page = page;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
+        ],
+      ),
     );
   }
 }
