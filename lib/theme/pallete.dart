@@ -1,4 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'theme_controller.dart';
+
+final themeProvider = Provider<ThemeData>((ref) {
+  final themeMode = ref.watch(themeModeProvider);
+
+  if (themeMode == ThemeMode.dark) return Pallete.darkModeAppTheme;
+  return Pallete.lightModeAppTheme;
+});
 
 class Pallete {
   // Colors
@@ -11,6 +21,11 @@ class Pallete {
 
   // Themes
   static final darkModeAppTheme = ThemeData.dark().copyWith(
+    textTheme: TextTheme(
+      bodySmall: TextStyle(fontSize: 12, color: Colors.grey.shade400),
+      titleSmall: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+      titleMedium: const TextStyle(fontSize: 16,  fontWeight: FontWeight.w500),
+    ),
     scaffoldBackgroundColor: blackColor,
     cardColor: greyColor,
     appBarTheme: const AppBarTheme(

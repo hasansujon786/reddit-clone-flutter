@@ -15,12 +15,24 @@ import '../repository/post_repository.dart';
 part 'post_controller.g.dart';
 
 @riverpod
+Stream<List<Post>> userFeed(UserFeedRef ref, List<Community> communities) {
+  return ref.watch(postControllerProvider.notifier).fetchUserFeed(communities);
+}
+
+@riverpod
 class PostController extends _$PostController {
   late final _postRepository = ref.read(postRepositoryProvider);
 
   @override
   bool build() {
     return false;
+  }
+
+  Stream<List<Post>> fetchUserFeed(List<Community> communities) {
+    if (communities.isEmpty) {
+      return Stream.value([]);
+    }
+    return _postRepository.fetchUserFeed(communities);
   }
 
   void shareLinkPost(

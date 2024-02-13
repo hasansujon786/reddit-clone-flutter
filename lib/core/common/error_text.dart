@@ -15,4 +15,7 @@ class ErrorText extends StatelessWidget {
   }
 }
 
-Widget rpErrorView(Object error, StackTrace stackTrace) => ErrorText(error: error.toString());
+Widget rpErrorView(Object error, StackTrace stackTrace) {
+  print('Error ===================== $error');
+  return ErrorText(error: error.toString());
+}

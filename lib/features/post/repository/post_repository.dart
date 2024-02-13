@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/constants/firebase_constants.dart';
 import '../../../core/failure.dart';
+import '../../../core/models/community.dart';
 import '../../../core/models/post.dart';
 import '../../../core/providers/firebase_providers.dart';
 import '../../../core/type_defs.dart';
@@ -32,5 +33,13 @@ class PostRepository {
     } catch (e) {
       return left(Failure(e.toString()));
     }
+  }
+
+  Stream<List<Post>> fetchUserFeed(List<Community> communities) {
+    return _postCollection
+        .where('communityName', whereIn: communities.map((e) => e.name).toList())
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((event) => event.docs.map((e) => Post.fromJson(e.data() as JsonMap)).toList());
   }
 }
