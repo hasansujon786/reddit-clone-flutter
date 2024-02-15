@@ -137,4 +137,21 @@ class PostController extends _$PostController {
       });
     }
   }
+
+  void deleteAPost(BuildContext context, Post post) async {
+    final res = await _postRepository.deleteAPost(post);
+    res.fold((l) => showSnackBar(context, l.message), (r) {
+      showSnackBar(context, 'Post Deleted successfully.');
+    });
+  }
+
+  void upvoteAPost(Post post) {
+    final uid = ref.read(signedInUserProvider)!.uid;
+    _postRepository.upvoteAPost(post, uid);
+  }
+
+  void downvoteAPost(Post post) {
+    final uid = ref.read(signedInUserProvider)!.uid;
+    _postRepository.downVoteAPost(post, uid);
+  }
 }

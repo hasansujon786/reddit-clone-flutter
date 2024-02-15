@@ -1,8 +1,13 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
+import '../../features/auth/controller/auth_cotroller.dart';
+import '../../features/community/controller/community_controller.dart';
+import '../../features/post/controller/post_controller.dart';
 import '../../theme/pallete.dart';
+import '../models/community.dart';
 import '../models/post.dart';
 
 class PostCard extends ConsumerWidget {
@@ -11,6 +16,18 @@ class PostCard extends ConsumerWidget {
     super.key,
     required this.post,
   });
+
+  void deleteAPost(BuildContext context, WidgetRef ref) {
+    ref.read(postControllerProvider.notifier).deleteAPost(context, post);
+  }
+
+  void navToCommunity(BuildContext context) {
+    Routemaster.of(context).push('r/${post.communityName}');
+  }
+
+  void navToUserProfile(BuildContext context) {
+    Routemaster.of(context).push('/u/${post.uid}');
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +52,7 @@ class PostCard extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildPostHeader(theme),
+                    buildPostHeader(context, ref, theme),
                     const SizedBox(height: 8),
                     Text(post.title, style: theme.textTheme.titleMedium),
                     const SizedBox(height: 6),
@@ -43,7 +60,7 @@ class PostCard extends ConsumerWidget {
                   ],
                 ),
               ),
-              const PostCardControlls()
+              PostCardControlls(post: post),
             ],
           ),
         ),
@@ -85,54 +102,88 @@ class PostCard extends ConsumerWidget {
     return Text(post.description ?? '', style: theme.textTheme.bodySmall);
   }
 
-  Row buildPostHeader(ThemeData theme) {
+  Row buildPostHeader(BuildContext context, WidgetRef ref, ThemeData theme) {
+    final uid = ref.watch(signedInUserProvider)!.uid;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CircleAvatar(backgroundImage: NetworkImage(post.communityAvater), radius: 16),
+        GestureDetector(
+          onTap: () => navToCommunity(context),
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(post.communityAvater),
+            radius: 16,
+          ),
+        ),
         const SizedBox(width: 8),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('r/${post.communityName}', style: theme.textTheme.titleSmall),
-            Text('u/${post.userName}', style: theme.textTheme.bodySmall),
+            GestureDetector(
+              onTap: () => navToCommunity(context),
+              child: Text('r/${post.communityName}', style: theme.textTheme.titleSmall),
+            ),
+            GestureDetector(
+              onTap: () => navToUserProfile(context),
+              child: Text('u/${post.userName}', style: theme.textTheme.bodySmall),
+            ),
           ],
         ),
         const Spacer(),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.more_vert, size: 20),
-          style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-        )
+        if (post.uid == uid)
+          IconButton(
+            onPressed: () => deleteAPost(context, ref),
+            icon: const Icon(Icons.delete, size: 20),
+            style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+          )
       ],
     );
   }
 }
 
 class PostCardControlls extends ConsumerWidget {
-  const PostCardControlls({super.key});
+  final Post post;
+  const PostCardControlls({
+    super.key,
+    required this.post,
+  });
+
+  void downVote(BuildContext context, WidgetRef ref) {
+    ref.read(postControllerProvider.notifier).downvoteAPost(post);
+  }
+
+  void upVote(BuildContext context, WidgetRef ref) {
+    ref.read(postControllerProvider.notifier).upvoteAPost(post);
+  }
+
+  void deleteAPost(BuildContext context, WidgetRef ref) {
+    ref.read(postControllerProvider.notifier).deleteAPost(context, post);
+  }
+
+  void showComments(BuildContext context, WidgetRef ref) {
+    // ref.read(postControllerProvider.notifier).deleteAPost(context, post);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
+    final uid = ref.read(signedInUserProvider)!.uid;
+
+    Community? comminity;
+    ref.watch(GetCommunityByNameProvider(post.communityName)).whenData((cm) => comminity = cm);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.upload_outlined)),
-            Text('0', style: theme.textTheme.titleSmall?.copyWith(color: Colors.grey.shade400)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.download_outlined)),
-          ],
-        ),
+        buildVoteControlls(context, ref, uid, theme),
         TextButton.icon(
-          onPressed: () {},
+          onPressed: () => showComments(context, ref),
           icon: const Icon(Icons.mode_comment_outlined, size: 22),
+          label: const Text('0'),
           style: ButtonStyle(
             iconColor: MaterialStatePropertyAll(Colors.grey.shade400),
             foregroundColor: MaterialStatePropertyAll(Colors.grey.shade400),
           ),
-          label: const Text('0'),
         ),
         TextButton.icon(
           onPressed: () {},
@@ -143,7 +194,49 @@ class PostCardControlls extends ConsumerWidget {
             foregroundColor: MaterialStatePropertyAll(Colors.grey.shade400),
           ),
         ),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.card_giftcard, size: 22)),
+        if (comminity?.mods.contains(uid) ?? false)
+          IconButton(
+            onPressed: () => deleteAPost(context, ref),
+            icon: const Icon(Icons.admin_panel_settings, size: 24),
+          ),
+      ],
+    );
+  }
+
+  Row buildVoteControlls(BuildContext context, WidgetRef ref, String uid, ThemeData theme) {
+    final downVoteColor = Colors.indigo.shade200;
+    final upVoteColor = Colors.orange.shade700;
+
+    final voteCount = post.upvotes.length - post.downvotes.length;
+    final hasUpVote = post.upvotes.contains(uid);
+    final hasDownVote = post.downvotes.contains(uid);
+
+    Color getTextColor() {
+      return hasUpVote
+          ? upVoteColor
+          : hasDownVote
+              ? downVoteColor
+              : Colors.grey.shade400;
+    }
+
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () => upVote(context, ref),
+          icon: const Icon(Icons.upload_outlined),
+          isSelected: hasUpVote,
+          selectedIcon: Icon(Icons.upload, color: upVoteColor),
+        ),
+        Text(
+          voteCount == 0 ? 'Vote' : voteCount.toString(),
+          style: theme.textTheme.titleSmall?.copyWith(color: getTextColor()),
+        ),
+        IconButton(
+          onPressed: () => downVote(context, ref),
+          icon: const Icon(Icons.download_outlined),
+          isSelected: hasDownVote,
+          selectedIcon: Icon(Icons.download, color: downVoteColor),
+        ),
       ],
     );
   }

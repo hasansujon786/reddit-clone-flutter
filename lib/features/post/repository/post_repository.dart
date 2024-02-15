@@ -42,4 +42,46 @@ class PostRepository {
         .snapshots()
         .map((event) => event.docs.map((e) => Post.fromJson(e.data() as JsonMap)).toList());
   }
+
+  FutureEitherVoid deleteAPost(Post post) async {
+    try {
+      return right(_postCollection.doc(post.id).delete());
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  void upvoteAPost(Post post, String userId) {
+    Map<String, FieldValue> voteData = {};
+
+    if (post.downvotes.contains(userId)) {
+      voteData['downvotes'] = FieldValue.arrayRemove([userId]);
+    }
+
+    if (post.upvotes.contains(userId)) {
+      voteData['upvotes'] = FieldValue.arrayRemove([userId]);
+    } else {
+      voteData['upvotes'] = FieldValue.arrayUnion([userId]);
+    }
+
+    _postCollection.doc(post.id).update(voteData);
+  }
+
+  void downVoteAPost(Post post, String userId) {
+    Map<String, FieldValue> voteData = {};
+
+    if (post.upvotes.contains(userId)) {
+      voteData['upvotes'] = FieldValue.arrayRemove([userId]);
+    }
+
+    if (post.downvotes.contains(userId)) {
+      voteData['downvotes'] = FieldValue.arrayRemove([userId]);
+    } else {
+      voteData['downvotes'] = FieldValue.arrayUnion([userId]);
+    }
+
+    _postCollection.doc(post.id).update(voteData);
+  }
 }
