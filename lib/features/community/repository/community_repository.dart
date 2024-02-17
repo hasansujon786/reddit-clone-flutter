@@ -5,22 +5,30 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/constants/firebase_constants.dart';
 import '../../../core/failure.dart';
 import '../../../core/models/community.dart';
+import '../../../core/models/post.dart';
 import '../../../core/providers/firebase_providers.dart';
 import '../../../core/type_defs.dart';
+import '../../post/repository/post_repository.dart';
 
 part 'community_repository.g.dart';
 
 @riverpod
 CommunityRepository communityRepository(CommunityRepositoryRef ref) {
-  return CommunityRepository(firestore: ref.read(firestoreProvider));
+  return CommunityRepository(
+    firestore: ref.read(firestoreProvider),
+    postRepository: ref.read(postRepositoryProvider),
+  );
 }
 
 class CommunityRepository {
   const CommunityRepository({
     required FirebaseFirestore firestore,
-  }) : _firestore = firestore;
+    required PostRepository postRepository,
+  })  : _firestore = firestore,
+        _postRepository = postRepository;
 
   final FirebaseFirestore _firestore;
+  final PostRepository _postRepository;
 
   CollectionReference get _communityCollection => _firestore.collection(FirebaseConstants.communitiesCollection);
 
@@ -121,5 +129,9 @@ class CommunityRepository {
     } catch (e) {
       return left(Failure(e.toString()));
     }
+  }
+
+  Stream<List<Post>> getCommunityPosts(String name) {
+    return _postRepository.searchPostByAFeild('communityName', name);
   }
 }

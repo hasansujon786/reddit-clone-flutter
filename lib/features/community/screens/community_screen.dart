@@ -4,6 +4,7 @@ import 'package:routemaster/routemaster.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
+import '../../../core/common/post_card.dart';
 import '../../../core/models/community.dart';
 import '../../../core/models/user_model.dart';
 import '../../auth/controller/auth_cotroller.dart';
@@ -26,9 +27,19 @@ class CommunityScreen extends ConsumerWidget {
             return Scaffold(
               body: NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) => buildAppBarWithBanner(commnity, user, context),
-                body: const Column(
-                  children: [],
-                ),
+                body: ref.watch(communityPostsProvider(commnity.name)).when(
+                      data: (posts) {
+                        return ListView.builder(
+                          itemCount: posts.length,
+                          itemBuilder: (context, index) {
+                            final post = posts[index];
+                            return PostCard(post: post);
+                          },
+                        );
+                      },
+                      error: rpErrorView,
+                      loading: rpLodingView,
+                    ),
               ),
             );
           },

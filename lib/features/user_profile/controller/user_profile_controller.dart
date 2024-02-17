@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:routemaster/routemaster.dart';
 
+import '../../../core/models/post.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/providers/storage_repository_provider.dart';
 import '../../../core/utils.dart';
@@ -59,4 +60,13 @@ class UserProfileController extends _$UserProfileController {
       Routemaster.of(context).pop();
     });
   }
+
+  Stream<List<Post>> getUserPosts(String uid) {
+    return _userProfifleRepository.getUserPosts(uid);
+  }
+}
+
+@riverpod
+Stream<List<Post>> getUserPosts(GetUserPostsRef ref, String uid) {
+  return ref.read(userProfileControllerProvider.notifier).getUserPosts(uid);
 }

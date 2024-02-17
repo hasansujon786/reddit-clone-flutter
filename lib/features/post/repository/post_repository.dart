@@ -43,6 +43,14 @@ class PostRepository {
         .map((event) => event.docs.map((e) => Post.fromJson(e.data() as JsonMap)).toList());
   }
 
+  Stream<List<Post>> searchPostByAFeild(String feildName, String feildValue) {
+    return _postCollection
+        .where(feildName, isEqualTo: feildValue)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((event) => event.docs.map((e) => Post.fromJson(e.data() as JsonMap)).toList());
+  }
+
   FutureEitherVoid deleteAPost(Post post) async {
     try {
       return right(_postCollection.doc(post.id).delete());

@@ -8,6 +8,7 @@ import 'package:routemaster/routemaster.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/failure.dart';
 import '../../../core/models/community.dart';
+import '../../../core/models/post.dart';
 import '../../../core/providers/storage_repository_provider.dart';
 import '../../../core/utils.dart';
 import '../../auth/controller/auth_cotroller.dart';
@@ -118,6 +119,10 @@ class CommunityController extends _$CommunityController {
 
     res.fold((l) => showSnackBar(context, l.message), (r) => Routemaster.of(context).pop());
   }
+
+  Stream<List<Post>> getCommunityPosts(String name) {
+    return _communityRepository.getCommunityPosts(name);
+  }
 }
 
 @Riverpod(keepAlive: true)
@@ -133,4 +138,9 @@ Stream<Community> getCommunityByName(GetCommunityByNameRef ref, String community
 @riverpod
 Stream<List<Community>> searchCommunity(SearchCommunityRef ref, String query) {
   return ref.watch(communityControllerProvider.notifier).searchCommunity(query);
+}
+
+@riverpod
+Stream<List<Post>> communityPosts(CommunityPostsRef ref, String communityName) {
+  return ref.read(communityControllerProvider.notifier).getCommunityPosts(communityName);
 }

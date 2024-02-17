@@ -303,8 +303,138 @@ class _SearchCommunityProviderElement
   String get query => (origin as SearchCommunityProvider).query;
 }
 
+String _$communityPostsHash() => r'85d4c9fcabad1dd7988d1be425f0c4b995d3470c';
+
+/// See also [communityPosts].
+@ProviderFor(communityPosts)
+const communityPostsProvider = CommunityPostsFamily();
+
+/// See also [communityPosts].
+class CommunityPostsFamily extends Family<AsyncValue<List<Post>>> {
+  /// See also [communityPosts].
+  const CommunityPostsFamily();
+
+  /// See also [communityPosts].
+  CommunityPostsProvider call(
+    String communityName,
+  ) {
+    return CommunityPostsProvider(
+      communityName,
+    );
+  }
+
+  @override
+  CommunityPostsProvider getProviderOverride(
+    covariant CommunityPostsProvider provider,
+  ) {
+    return call(
+      provider.communityName,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'communityPostsProvider';
+}
+
+/// See also [communityPosts].
+class CommunityPostsProvider extends AutoDisposeStreamProvider<List<Post>> {
+  /// See also [communityPosts].
+  CommunityPostsProvider(
+    String communityName,
+  ) : this._internal(
+          (ref) => communityPosts(
+            ref as CommunityPostsRef,
+            communityName,
+          ),
+          from: communityPostsProvider,
+          name: r'communityPostsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$communityPostsHash,
+          dependencies: CommunityPostsFamily._dependencies,
+          allTransitiveDependencies:
+              CommunityPostsFamily._allTransitiveDependencies,
+          communityName: communityName,
+        );
+
+  CommunityPostsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.communityName,
+  }) : super.internal();
+
+  final String communityName;
+
+  @override
+  Override overrideWith(
+    Stream<List<Post>> Function(CommunityPostsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: CommunityPostsProvider._internal(
+        (ref) => create(ref as CommunityPostsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        communityName: communityName,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<List<Post>> createElement() {
+    return _CommunityPostsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CommunityPostsProvider &&
+        other.communityName == communityName;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, communityName.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin CommunityPostsRef on AutoDisposeStreamProviderRef<List<Post>> {
+  /// The parameter `communityName` of this provider.
+  String get communityName;
+}
+
+class _CommunityPostsProviderElement
+    extends AutoDisposeStreamProviderElement<List<Post>>
+    with CommunityPostsRef {
+  _CommunityPostsProviderElement(super.provider);
+
+  @override
+  String get communityName => (origin as CommunityPostsProvider).communityName;
+}
+
 String _$communityControllerHash() =>
-    r'2e67e746862264e5104510883157c920226e3df1';
+    r'd2489488f29087bbe637aca21b33efb81fb3b6b3';
 
 /// See also [CommunityController].
 @ProviderFor(CommunityController)

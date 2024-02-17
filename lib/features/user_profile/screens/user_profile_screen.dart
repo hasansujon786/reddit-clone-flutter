@@ -4,7 +4,9 @@ import 'package:routemaster/routemaster.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
+import '../../../core/common/post_card.dart';
 import '../../auth/controller/auth_cotroller.dart';
+import '../controller/user_profile_controller.dart';
 
 class UserProfileScreen extends ConsumerWidget {
   final String uid;
@@ -32,7 +34,7 @@ class UserProfileScreen extends ConsumerWidget {
                     ),
                   ),
                   SliverPadding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16).copyWith(bottom: 0),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate(
                         [
@@ -60,19 +62,27 @@ class UserProfileScreen extends ConsumerWidget {
                               )
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Text('${user.karma} karma'),
-                          ),
+                          const SizedBox(height: 8),
+                          Text('${user.karma} karma'),
                           const Divider(thickness: 2),
                         ],
                       ),
                     ),
                   )
                 ],
-                body: const Column(
-                  children: [],
-                ),
+                body: ref.watch(getUserPostsProvider(uid)).when(
+                      data: (posts) {
+                        return ListView.builder(
+                          itemCount: posts.length,
+                          itemBuilder: (context, index) {
+                            final post = posts[index];
+                            return PostCard(post: post);
+                          },
+                        );
+                      },
+                      error: rpErrorView,
+                      loading: rpLodingView,
+                    ),
               ),
             );
           },

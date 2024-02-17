@@ -154,7 +154,7 @@ class _UserFeedProviderElement
   List<Community> get communities => (origin as UserFeedProvider).communities;
 }
 
-String _$postControllerHash() => r'65cba1f741ad6595b3554ee58e9a14414e5ee87b';
+String _$postControllerHash() => r'c32a5997774faf52621000544186d56e03bdef83';
 
 /// See also [PostController].
 @ProviderFor(PostController)
